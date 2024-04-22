@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ExpenseType, api } from "./api";
+import { AdminRightContext, AdminRightsProvider } from "./AdminRightsContext";
 
 /*
   context name should be AdminRightsContext
 */
 
 const AdminButton = () => {
-  /*
-    use context to manipulate the context itself, by toggling whether it's admin mode or not
-  */
-  return <button>Toggle admin mode</button>;
+  const context = useContext(AdminRightContext)
+  const toggleCanDelete = context?.toggleCanDelete
+
+  return (
+    <button onClick={toggleCanDelete}>
+      Toggle admin mode
+    </button>
+  ) 
 };
 
 const HeaderComponent = () => {
@@ -22,12 +27,13 @@ const HeaderComponent = () => {
 };
 
 const Expense = ({ expense }: { expense: ExpenseType }) => {
+  const context = useContext(AdminRightContext)
+  const canDelete = context?.canDelete
   // Use the context
   // If the context is true, show button, else hide the button
-  const contextValue = true;
   return (
     <p key={expense.id}>
-      {contextValue && (
+      {canDelete && (
         <button
           onClick={() => {
             console.log("delete, should be hidden when context is toggled off");
@@ -40,6 +46,7 @@ const Expense = ({ expense }: { expense: ExpenseType }) => {
     </p>
   );
 };
+
 const Expenses = () => {
   const [expenses, setExpenses] = useState<ExpenseType[]>();
 
@@ -60,14 +67,14 @@ const Expenses = () => {
   };
 
   return (
-    // <---1 Wrap this component with a context
+    <AdminRightsProvider>
     <div className="m-10">
       <HeaderComponent />
       {expenses.map((expense) => (
         <Expense expense={expense} key={expense.id} />
       ))}
     </div>
-    // 1--->
+    </AdminRightsProvider>
   );
 };
 

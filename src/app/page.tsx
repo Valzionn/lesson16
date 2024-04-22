@@ -14,8 +14,8 @@ export default function Home() {
       {/* <TeamObject /> */}
       {/* <GameReviews /> */}
       {/* <ShoppingList /> */}
-      {/* <Expenses /> */}
-      <Table />
+       <Expenses /> 
+      {/* < Table /> */}
       {/* <CompositeTable /> */}
     </>
   );
