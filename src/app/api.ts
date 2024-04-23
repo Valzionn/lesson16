@@ -21,13 +21,13 @@ const EXPENSE = {
   cost: 1200
 }
 
-const postExpenses = async (): Promise<ExpenseType[]> => {
+const postExpenses = async (newExpense: ExpenseType): Promise<ExpenseType[]> => {
   const res = await fetch('http://localhost:3001/api/create-expense', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(EXPENSE)
+    body: JSON.stringify(newExpense)
   })
 
   if (!res.ok) {
